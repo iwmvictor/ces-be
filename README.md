@@ -58,8 +58,7 @@ Follow these steps to set up the backend for local development:
 
 ### 1. Clone the Repository
 ```bash
-git clone <your-repo-url>
-cd <project-directory>
+
 
 DATABASE_URL="your_supabase_postgresql_connection_string"
 PORT=3000
@@ -77,6 +76,8 @@ EMAIL_USER="your_smtp_username"
 EMAIL_PASS="your_smtp_password"
 EMAIL_FROM="your_default_sender_email"
 
-
+```
+---
+```
 npx prisma generate
 npx prisma migrate dev --name init
