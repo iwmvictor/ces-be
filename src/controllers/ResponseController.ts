@@ -53,21 +53,7 @@ export class ResponseController {
   ): Promise<IResponse<TResponse>> {
     return ResponseService.createResponse(responseData, req);
   }
-
-  @Put("/{id}")
-  @Middlewares(
-    upload.any(),
-    appendPhotoAttachments,
-    appendPhoto,
-    checkRole(roles.ORGANIZATION),
-  )
-  public async updateResponse(
-    @Path() id: string,
-    @Body() responseData: Partial<CreateResponseDto>,
-  ): Promise<IResponse<TResponse | null>> {
-    return ResponseService.updateResponse(id, responseData);
-  }
-
+  
   @Delete("/{id}")
   public async deleteResponse(@Path() id: string): Promise<IResponse<null>> {
     await ResponseService.deleteResponse(id);

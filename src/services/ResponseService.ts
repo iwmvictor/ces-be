@@ -81,21 +81,6 @@ export class ResponseService {
     };
   }
 
-  static async updateResponse(
-    id: string,
-    responseData: Partial<CreateResponseDto>,
-  ): Promise<IResponse<TResponse>> {
-    const response = await prisma.response.update({
-      where: { id },
-      data: responseData,
-    });
-    return {
-      statusCode: 200,
-      message: "Response updated successfully",
-      data: response,
-    };
-  }
-
   static async deleteResponse(id: string): Promise<void> {
     await prisma.response.delete({ where: { id } });
   }
