@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model User {
+  id                 String         @id @default(uuid())
+  email              String         @unique
+  password           String
+  firstName          String
+  lastName           String
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  otp                String?
+  phoneNumber        String        
+  otpExpiresAt       DateTime? 
+  photo              String         @default("https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg")
+  roles              UserRoles[]
+  organization       Organization[]
+  feedback           Feedback[]
+}
+
+model UserRoles {
+  id     String  @id @default(uuid())
+  userId String
+  role   Role
+  user   User @relation(fields: [userId], references: [id])
+}
+
+
+enum Role {
+  ADMIN
+  ORGANIZATION
+  CITIZEN
+}
+
+enum FeedbackStatus {
+  RESOLVED
+  UNRESOLVED
+  
+}
+
+enum ResponseStatus {
+  PENDING
+  ANSWERED
+  CLOSED
+}
+
+model Organization {
+  id                 String   @id @default(uuid())
+  name               String
+  category           String
+  address            String
+  tags               String[]
+  userId             String
+  organizationUser   User     @relation(fields: [userId], references: [id])
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  response           Response[]
+}
+
+
+model Feedback {
+  id                 String        @id  @default(uuid())
+  category           String
+  description        String
+  location           String
+  phoneNumber        String?
+  ticket             String?
+  galleryImages      String[]        @default([])    
+  organizationIds    String[]        @default([]) 
+  feedbackStatus     FeedbackStatus  @default(UNRESOLVED)
+  responseStatus     ResponseStatus  @default(PENDING)
+  userId             String 
+  user               User            @relation(fields: [userId], references: [id])
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  response           Response[]
+}
+
+
+model Response {
+  id                 String        @id  @default(uuid())
+  feedbackId         String
+  subject            String
+  description        String
+  photo              String?       
+  organizationId     String
+  organization       Organization  @relation(fields: [organizationId], references: [id])
+  feedback           Feedback      @relation(fields: [feedbackId], references: [id])
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+
+

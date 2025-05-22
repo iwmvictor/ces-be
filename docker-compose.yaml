@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        DATABASE_URL: ${DATABASE_URL} # Pass DATABASE_URL as a build argument
+    ports:
+      - "9000:9000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL} # Ensuring DATABASE_URL is set here as well
+      PORT: ${PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      SALT_ROUNDS: ${SALT_ROUNDS}
+      CLOUD_NAME: ${CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: event_management_kr13_user
+      POSTGRES_PASSWORD: 0Xpg820ZCIRJnUxNcQd5Od0MtJKKIAe2
+      POSTGRES_DB: event_management_kr13
+    ports:
+      - "5433:5432"
